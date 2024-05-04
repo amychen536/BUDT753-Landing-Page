@@ -1,11 +1,11 @@
 body, html {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: cursive;
 }
 
 header {
-    background: #333;
+    background: #a4794d;
     color: #fff;
     padding: 10px 20px;
     text-align: center;
@@ -35,7 +35,7 @@ section h3 {
 }
 
 #hero {
-    background: #007BFF;
+    background: #c18e59;
     color: white;
     padding: 50px 20px;
     text-align: center;
@@ -43,26 +43,26 @@ section h3 {
 
 button {
     padding: 10px 20px;
-    background-color: #28a745;
+    background-color: #d9ead3;
     color: white;
     border: none;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #218838;
+    background-color: #d9ead3;
 }
 
 #connectWalletBtn {
     padding: 8px 16px;
-    background-color: #4CAF50;
+    background-color: #d9ead3;
     color: white;
     border: none;
     cursor: pointer;
 }
 
 #connectWalletBtn:hover {
-    background-color: #45a049;
+    background-color: #d9ead3;
 }
 
 #walletConnected img {
