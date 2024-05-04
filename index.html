@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.0/web3.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Pet Patrol</h1>
+        <nav>
+            <ul>
+                <li><a href="#business-overview">Business Overview</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#market-opportunity">Market Opportunity</a></li>
+                <li><a href="#security">Security</a></li>
+                <li><a href="#business-strategy">Business Strategy</a></li>
+            </ul>
+        </nav>
+        <div id="walletStatus">
+            <button id="connectWalletBtn">Connect Wallet</button>
+            <span id="walletConnected" style="display:none;"><img src="green-check.png" alt="Connected" /></span>
+        </div>
+    </header>
+
+    <section id="hero">
+        <h2>Welcome to Our Token Launch!</h2>
+        <input type="number" id="tokenAmount" placeholder="Enter token amount" min="1" step="1">
+        <button id="buyTokenBtn">Buy Tokens</button>
+    </section>
+
+    <section id="business-overview">
+        <h3>Business Overview</h3>
+        <p>Learn more about our Pet Patrol and what we do.</p>
+        <a href="pages/business-overview.html">More on Business Overview</a>
+    </section>
+
+    <section id="team">
+        <h3>Our Team</h3>
+        <p>Meet the Groot behind the project.</p>
+        <a href="pages/team.html">Meet Our Team</a>
+    </section>
+
+    <section id="market-opportunity">
+        <h3>Market Opportunity</h3>
+        <p>Discover the market potential Pet Patrol.</p>
+        <a href="pages/market-opportunity.html">Explore Market Opportunity</a>
+    </section>
+
+    <section id="security">
+        <h3>Security</h3>
+        <p>Security is important. I am Groot.</p>
+        <a href="pages/security.html">Our Security Measures</a>
+    </section>
+
+    <section id="business-strategy">
+        <h3>Business Strategy</h3>
+        <p>Our approach to achieving business success. I am Groot.</p>
+        <a href="pages/business-strategy.html">View Our Strategy</a>
+    </section>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
