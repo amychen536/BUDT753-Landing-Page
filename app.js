@@ -1,109 +1,86 @@
-document.getElementById('buyTokenBtn').addEventListener('click', async function() {
-    if (typeof window.ethereum !== 'undefined') {
-        const web3 = new Web3(window.ethereum);
+// app.js
+document.addEventListener('DOMContentLoaded', function () {
+    const app = {
+        ethereum: window.ethereum,
+        provider: null,
+        signer: null,
+        contract: null,
+        accounts: null,
+        contractAddress: "0xd55ae38e265c0d1978fbe5e51f46aadee76e4e5b", // Update with your contract address
+        erc20Abi: [
+            "function name() view returns (string)",
+            "function symbol() view returns (string)",
+            "function totalSupply() view returns (uint256)",
+            "function balanceOf(address) view returns (uint256)",
+            "function transfer(address to, uint256 amount) returns (bool)"
+        ],
+        domElements: {
+            connectBtn: document.getElementById('connect-btn'),
+            contractTitle: document.getElementById('contract-title'),
+            totalSupplyEl: document.getElementById('total-supply-el'),
+            userBalanceEl: document.getElementById('user-balance-el'),
+            feedbackMsgEl: document.getElementById('feedback-msg'),
+            errorMsgEl: document.getElementById('error-msg')
+        },
 
-        try {
-            // New way to request account access (EIP-1102)
-            await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const accounts = await web3.eth.getAccounts();
-            const account = accounts[0];
-            console.log('Connected account:', account);
+        init: function() {
+            this.bindEvents();
+            this.checkWallet();
+        },
 
-            const contractAddress = 'YOUR_CONTRACT_ADDRESS_HERE';
-            const abi = [
-                {
-                    "constant": false,
-                    "inputs": [{"name": "to", "type": "address"}, {"name": "amount", "type": "uint256"}],
-                    "name": "mint",
-                    "outputs": [],
-                    "payable": false,
-                    "stateMutability": "nonpayable",
-                    "type": "function"
-                },
-                {
-                    "constant": true,
-                    "inputs": [],
-                    "name": "decimals",
-                    "outputs": [{"name": "", "type": "uint8"}],
-                    "payable": false,
-                    "stateMutability": "view",
-                    "type": "function"
-                }
-            ];
+        bindEvents: function() {
+            this.domElements.connectBtn.addEventListener('click', this.connectWallet.bind(this));
+        },
 
-            const contract = new web3.eth.Contract(abi, contractAddress);
-
-            // Get the amount to buy from the input field
-            const inputAmount = document.getElementById('tokenAmount').value;
-            const amountToBuy = inputAmount ? parseInt(inputAmount) : 0;
-            if (amountToBuy <= 0) {
-                alert('Please enter a valid token amount.');
+        checkWallet: function() {
+            if (!this.ethereum) {
+                this.displayError("Please install MetaMask to use this site.");
                 return;
             }
+            this.provider = new ethers.providers.Web3Provider(this.ethereum);
+        },
 
-            const decimals = await contract.methods.decimals().call();
-            const amount = web3.utils.toBN(amountToBuy).mul(web3.utils.toBN(10).pow(web3.utils.toBN(decimals)));
-
-            // Execute the mint function
-            contract.methods.mint(account, amount.toString()).send({from: account})
-                .on('transactionHash', hash => {
-                    console.log('Transaction Hash:', hash);
-                    document.getElementById('buyTokenBtn').innerText = 'Transaction Submitted...';
-                })
-                .on('receipt', receipt => {
-                    console.log('Receipt:', receipt);
-                    alert('Tokens minted successfully!');
-                    document.getElementById('buyTokenBtn').innerText = 'Buy Tokens';
-                })
-                .on('error', (error, receipt) => {
-                    console.error('Error:', error);
-                    alert('Transaction failed!');
-                    document.getElementById('buyTokenBtn').innerText = 'Buy Tokens';
-                });
-
-        } catch (error) {
-            console.error('Error connecting to MetaMask:', error);
-            alert('Failed to connect to MetaMask. Please ensure that it is installed and that you are logged in.');
-        }
-    } else {
-        alert('Please install MetaMask!');
-    }
-});
-
-window.addEventListener('load', function() {
-    if (typeof window.ethereum !== 'undefined') {
-        const web3 = new Web3(window.ethereum);
-        web3.eth.getAccounts()
-            .then(accounts => {
-                if (accounts.length > 0) {
-                    document.getElementById('walletConnected').style.display = 'inline';
-                    document.getElementById('connectWalletBtn').style.display = 'none';
-                } else {
-                    document.getElementById('walletConnected').style.display = 'none';
-                    document.getElementById('connectWalletBtn').style.display = 'inline';
-                    setupConnectButton(web3);
-                }
-            })
-            .catch(error => {
-                console.error('Failed to get accounts:', error);
-            });
-    } else {
-        alert('Please install MetaMask!');
-    }
-});
-
-function setupConnectButton(web3) {
-    const button = document.getElementById('connectWalletBtn');
-    button.addEventListener('click', async () => {
-        try {
-            await window.ethereum.request({ method: 'eth_requestAccounts' })
-            const accounts = await web3.eth.getAccounts();
-            if (accounts.length > 0) {
-                document.getElementById('walletConnected').style.display = 'inline';
-                button.style.display = 'none';
+        connectWallet: async function() {
+            try {
+                this.accounts = await this.provider.send("eth_requestAccounts", []);
+                this.signer = this.provider.getSigner();
+                this.updateContractDetails();
+            } catch (error) {
+                this.displayError("Failed to connect wallet. " + error.message);
             }
-        } catch (error) {
-            console.error('Error connecting to MetaMask:', error);
+        },
+
+        updateContractDetails: async function() {
+            try {
+                this.contract = new ethers.Contract(this.contractAddress, this.erc20Abi, this.signer);
+                const name = await this.contract.name();
+                const symbol = await this.contract.symbol();
+                const totalSupply = await this.contract.totalSupply();
+                const userBalance = await this.contract.balanceOf(this.accounts[0]);
+
+                this.domElements.contractTitle.innerText = `${name} (${symbol})`;
+                this.domElements.totalSupplyEl.innerText = ethers.utils.formatUnits(totalSupply, 18);
+                this.domElements.userBalanceEl.innerText = ethers.utils.formatUnits(userBalance, 18);
+                this.displayFeedback("Contract details updated successfully.");
+            } catch (error) {
+                this.displayError("Failed to fetch contract details. " + error.message);
+            }
+        },
+
+        displayFeedback: function(message) {
+            this.domElements.feedbackMsgEl.innerText = message;
+            setTimeout(() => {
+                this.domElements.feedbackMsgEl.innerText = '';
+            }, 5000);
+        },
+
+        displayError: function(message) {
+            this.domElements.errorMsgEl.innerText = message;
+            setTimeout(() => {
+                this.domElements.errorMsgEl.innerText = '';
+            }, 5000);
         }
-    });
-}
+    };
+
+    app.init();
+});
