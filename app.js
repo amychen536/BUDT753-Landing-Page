@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
         signer: null,
         contract: null,
         accounts: null,
-        contractAddress: "0xd55ae38e265c0d1978fbe5e51f46aadee76e4e5b", // Update with your contract address
+        contractAddress: "0x14b1ec0351762e3d157800c38c8f8e8a01a399c2", // Update with your contract address
         erc20Abi: [
             "function name() view returns (string)",
             "function symbol() view returns (string)",
