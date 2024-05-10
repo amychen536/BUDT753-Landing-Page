@@ -9,48 +9,61 @@
 </head>
 <body>
     <header>
-        <h1>Coffee Union</h1>
+        <h1>Pet Patrol</h1>
         <nav>
-
             <ul>
                 <li><a href="#business-overview">Business Overview</a></li>
                 <li><a href="#team">Team</a></li>
                 <li><a href="#market-opportunity">Market Opportunity</a></li>
                 <li><a href="#security">Security</a></li>
-                <li><a href="#business-strategy">Contact</a></li>
+                <li><a href="#business-strategy">Business Strategy</a></li>
             </ul>
         </nav>
+        <div id="walletStatus">
+            <button id="connect-btn">Connect Wallet</button>
+            <span id="walletConnected" style="display:none;"><img src="green-check.png" alt="Connected" /></span>
+        </div>
     </header>
 
     <section id="hero">
         <h2>Welcome to Our Token Launch!</h2>
+        <p id="contract-title">Coffee</p>
+        <p>Total Supply: <span id="total-supply-el">0</span> tokens</p>
+        <p>Your Balance: <span id="user-balance-el">0</span> tokens</p>
         <input type="number" id="tokenAmount" placeholder="Enter token amount" min="1" step="1">
-        <button id="buyTokenBtn">Redeem Tokens</button>
-        <button id="connectWalletBtn">Connect Wallet</button>
+        <button id="buyTokenBtn">Buy Tokens</button>
+        <p id="feedback-msg"></p>
+        <p id="error-msg" style="color: red;"></p>
     </section>
 
     <section id="business-overview">
         <h3>Business Overview</h3>
-        <p>Learn more about our Coffee Union Tokens.</p>
+        <p>Learn more about our Pet Patrol and what we do.</p>
         <a href="business-overview.html">More on Business Overview</a>
     </section>
 
     <section id="team">
         <h3>Our Team</h3>
-        <p>Meet the team behind the project.</p>
+        <p>Meet the Groot behind the project.</p>
         <a href="team.html">Meet Our Team</a>
     </section>
 
     <section id="market-opportunity">
         <h3>Market Opportunity</h3>
-        <p>Discover the market potential Coffee Union tokens.</p>
+        <p>Discover the market potential Pet Patrol.</p>
         <a href="market-opportunity.html">Explore Market Opportunity</a>
     </section>
 
     <section id="security">
         <h3>Security</h3>
-        <p>Learn more about our privacy policies</p>
+        <p>Security is important. I am Groot.</p>
         <a href="security.html">Our Security Measures</a>
+    </section>
+
+    <section id="business-strategy">
+        <h3>Business Strategy</h3>
+        <p>Our approach to achieving business success. I am Groot.</p>
+        <a href="business-strategy.html">View Our Strategy</a>
     </section>
 
     <script src="app.js"></script>
