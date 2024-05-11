@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.domElements.contractTitle.innerText = `${name} (${symbol})`;
                 this.domElements.totalSupplyEl.innerText = ethers.utils.formatUnits(totalSupply, 18);
                 this.domElements.userBalanceEl.innerText = ethers.utils.formatUnits(userBalance, 18);
-                this.displayFeedback("Contract details updated successfully.").style.color = "white";
+                this.displayFeedback("Contract details updated successfully.");
             } catch (error) {
                 this.displayError("Failed to fetch contract details. " + error.message);
             }
